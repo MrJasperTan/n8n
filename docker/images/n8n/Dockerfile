@@ -27,6 +27,14 @@ ENV PATH="/usr/local/bin:/bin:${PATH}"
 RUN set -eux; \
     # Install n8n globally at version 1.83.2
     npm install -g --omit=dev n8n@${N8N_VERSION} --ignore-scripts && \
+    # Install the MCP community node package globally
+    npm install -g n8n-nodes-mcp && \
+    # (Temporarily skip the MCP build step)
+    # npm install -g typescript gulp-cli && \
+    # cd /usr/local/lib/node_modules/n8n-nodes-mcp && \
+    # tsc && gulp build:icons && \
+    # cd - && \
+    \
     # Rebuild sqlite3 dependency for n8n
     npm rebuild --prefix=/usr/local/lib/node_modules/n8n sqlite3 && \
     # Remove unnecessary components to reduce image size
