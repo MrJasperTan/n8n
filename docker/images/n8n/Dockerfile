@@ -24,6 +24,7 @@ ENV N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
 ENV N8N_RUNNERS_ENABLED=true
 # Ensure both /usr/local/bin and /bin are in PATH
 ENV PATH="/usr/local/bin:/bin:${PATH}"
+
 RUN set -eux; \
     # Install n8n globally at version 1.83.2
     npm install -g --omit=dev n8n@${N8N_VERSION} --ignore-scripts && \
