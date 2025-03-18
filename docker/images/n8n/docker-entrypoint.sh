@@ -6,6 +6,9 @@ if [ -d /opt/custom-certificates ]; then
   c_rehash /opt/custom-certificates
 fi
 
+# Start the MCP client tool using Node (since the package doesn't expose a binary)
+node /usr/local/lib/node_modules/n8n-nodes-mcp/index.js mcpClientTool &
+
 if [ "$#" -gt 0 ]; then
   # Got started with arguments
   exec n8n "$@"
