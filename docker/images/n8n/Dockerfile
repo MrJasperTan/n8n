@@ -31,7 +31,7 @@ RUN set -eux; \
 
 ARG TARGETPLATFORM
 ARG LAUNCHER_VERSION=1.1.1
-COPY n8n-task-runners.json /etc/n8n-task-runners.json
+COPY docker/images/n8n/n8n-task-runners.json /etc/n8n-task-runners.json
 # Download, verify, then extract the launcher binary
 RUN \
     if [[ "$TARGETPLATFORM" = "linux/amd64" ]]; then export ARCH_NAME="amd64"; \
