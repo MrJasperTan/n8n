@@ -16,9 +16,26 @@ LABEL org.opencontainers.image.version=${N8N_VERSION}
 ENV N8N_VERSION=${N8N_VERSION}
 ENV NODE_ENV=production
 ENV N8N_RELEASE_TYPE=stable
+# Enforce settings file permissions as recommended
+ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+# Enforce settings community codes permissions
+ENV N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
+# Enforce settings runner permissions as recommended
+ENV N8N_RUNNERS_ENABLED=true
+# Ensure both /usr/local/bin and /bin are in PATH
+ENV PATH="/usr/local/bin:/bin:${PATH}"
+
 RUN set -eux; \
     # Install n8n globally at version 1.83.2
     npm install -g --omit=dev n8n@${N8N_VERSION} --ignore-scripts && \
+    # Install the MCP community node package globally
+    npm install -g n8n-nodes-mcp && \
+    # (Temporarily skip the MCP build step)
+    # npm install -g typescript gulp-cli && \
+    # cd /usr/local/lib/node_modules/n8n-nodes-mcp && \
+    # tsc && gulp build:icons && \
+    # cd - && \
+    \
     # Rebuild sqlite3 dependency for n8n
     npm rebuild --prefix=/usr/local/lib/node_modules/n8n sqlite3 && \
     # Remove unnecessary components to reduce image size
@@ -31,7 +48,7 @@ RUN set -eux; \
 
 ARG TARGETPLATFORM
 ARG LAUNCHER_VERSION=1.1.1
-COPY n8n-task-runners.json /etc/n8n-task-runners.json
+COPY docker/images/n8n/n8n-task-runners.json /etc/n8n-task-runners.json
 # Download, verify, then extract the launcher binary
 RUN \
     if [[ "$TARGETPLATFORM" = "linux/amd64" ]]; then export ARCH_NAME="amd64"; \
@@ -46,7 +63,7 @@ RUN \
     cd - && \
     rm -r /launcher-temp
 
-COPY docker-entrypoint.sh /
+COPY docker/images/n8n/docker-entrypoint.sh /
 
 RUN \
     mkdir .n8n && \
