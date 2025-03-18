@@ -16,6 +16,14 @@ LABEL org.opencontainers.image.version=${N8N_VERSION}
 ENV N8N_VERSION=${N8N_VERSION}
 ENV NODE_ENV=production
 ENV N8N_RELEASE_TYPE=stable
+# Enforce settings file permissions as recommended
+ENV N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+# Enforce settings community codes permissions
+ENV N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
+# Enforce settings runner permissions as recommended
+ENV N8N_RUNNERS_ENABLED=true
+# Ensure both /usr/local/bin and /bin are in PATH
+ENV PATH="/usr/local/bin:/bin:${PATH}"
 RUN set -eux; \
     # Install n8n globally at version 1.83.2
     npm install -g --omit=dev n8n@${N8N_VERSION} --ignore-scripts && \
