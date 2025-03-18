@@ -46,7 +46,7 @@ RUN \
     cd - && \
     rm -r /launcher-temp
 
-COPY docker-entrypoint.sh /
+COPY docker/images/n8n/docker-entrypoint.sh /
 
 RUN \
     mkdir .n8n && \
